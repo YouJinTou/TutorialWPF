@@ -1,36 +1,33 @@
-﻿using System;
+﻿using _02_TreeViewsAndValueConverters.Data;
+using _02_TreeViewsAndValueConverters.ViewModels;
+using System;
 using System.Globalization;
-using System.IO;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
 namespace _02_TreeViewsAndValueConverters
 {
-    [ValueConversion(typeof(string), typeof(BitmapImage))]
+    [ValueConversion(typeof(DirectoryType), typeof(BitmapImage))]
     class HeaderToImageConverter : IValueConverter
     {
         public static HeaderToImageConverter Instance = new HeaderToImageConverter();
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null)
-            {
-                return null;
-            }
-
-            var path = value.ToString();
             var image = "Images/file.png";
-            var name = MainWindow.GetFileFolderName(path);
-            var isDrive = string.IsNullOrEmpty(name);
-            var isFolder = new FileInfo(path).Attributes.HasFlag(FileAttributes.Directory);
 
-            if (isDrive)
+            switch ((DirectoryType)value)
             {
-                image = "Images/drive.png";
-            }
-            else if (isFolder)
-            {
-                image = "Images/folder-closed.png";
+                case DirectoryType.Drive:
+                    image = "Images/drive.png";
+
+                    break;
+                case DirectoryType.Folder:
+                    image = "Images/folder-closed.png";
+
+                    break;
+                default:
+                    break;
             }
 
             return new BitmapImage(new Uri($"pack://application:,,,/{image}"));
