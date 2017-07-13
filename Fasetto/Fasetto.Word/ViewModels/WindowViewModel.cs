@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 
 namespace Fasetto.Word.ViewModels
 {
@@ -20,7 +21,26 @@ namespace Fasetto.Word.ViewModels
                 this.OnPropertyChanged(nameof(this.WindowRadius));
                 this.OnPropertyChanged(nameof(this.WindowCornerRadius));
             };
+
+            this.MinimizeCommand = new RelayCommand(() => this.window.WindowState = WindowState.Minimized);
+            this.MaximizeCommand = new RelayCommand(() =>  this.window.WindowState ^= WindowState.Maximized);
+            this.CloseCommand = new RelayCommand(() =>  this.window.Close());
+            this.MenuCommand = new RelayCommand(() =>  SystemCommands.ShowSystemMenu(this.window, this.GetMousePosition()));
+
+            var resizer = new WindowResizer(this.window);
         }
+
+        public ICommand MinimizeCommand { get; set; }
+
+        public ICommand MaximizeCommand { get; set; }
+
+        public ICommand CloseCommand { get; set; }
+
+        public ICommand MenuCommand { get; set; }
+
+        public double WidnowMinimumWidth { get; set; } = 400;
+
+        public double WidnowMinimumHeight { get; set; } = 400;
 
         public int ResizeBorder { get; set; } = 6;
 
@@ -29,6 +49,14 @@ namespace Fasetto.Word.ViewModels
             get
             {
                 return new Thickness(this.ResizeBorder + this.OuterMarginSize);
+            }
+        }
+
+        public Thickness InnerContentPadding
+        {
+            get
+            {
+                return new Thickness(this.ResizeBorder);
             }
         }
 
@@ -80,6 +108,13 @@ namespace Fasetto.Word.ViewModels
             {
                 return new GridLength(this.TitleHeight + this.ResizeBorder);
             }
+        }
+        
+        private Point GetMousePosition()
+        {
+            var position = Mouse.GetPosition(this.window);
+
+            return new Point(position.X + this.window.Left, position.Y + this.window.Top);
         }
     }
 }
