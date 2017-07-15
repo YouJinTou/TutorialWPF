@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using Fasetto.Word.Models;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Fasetto.Word.ViewModels
@@ -8,6 +9,7 @@ namespace Fasetto.Word.ViewModels
         private Window window;
         private int outerMarginSize;
         private int windowRadius;
+        private WindowDockPosition dockPosition = WindowDockPosition.Undocked;
 
         public WindowViewModel(Window window)
         {
@@ -42,7 +44,21 @@ namespace Fasetto.Word.ViewModels
 
         public double WidnowMinimumHeight { get; set; } = 400;
 
-        public int ResizeBorder { get; set; } = 6;
+        public bool Borderless
+        {
+            get
+            {
+                return (this.window.WindowState == WindowState.Maximized || this.dockPosition == WindowDockPosition.Undocked);
+            }
+        }
+
+        public int ResizeBorder
+        {
+            get
+            {
+                return this.Borderless ? 0 : 6;
+            }
+        }
 
         public Thickness ResizeBorderThickness
         {
@@ -56,7 +72,7 @@ namespace Fasetto.Word.ViewModels
         {
             get
             {
-                return new Thickness(this.ResizeBorder);
+                return new Thickness(0);
             }
         }
 
@@ -109,7 +125,9 @@ namespace Fasetto.Word.ViewModels
                 return new GridLength(this.TitleHeight + this.ResizeBorder);
             }
         }
-        
+
+        public ApplicationPage CurrentPage { get; set; }
+
         private Point GetMousePosition()
         {
             var position = Mouse.GetPosition(this.window);
