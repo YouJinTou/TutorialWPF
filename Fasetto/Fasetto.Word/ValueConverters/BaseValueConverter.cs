@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Markup;
 
-namespace Fasetto.Word.ValueConverters
+namespace Fasetto.Word
 {
     public abstract class BaseValueConverter<T> : MarkupExtension, IValueConverter
         where T : class, new()
