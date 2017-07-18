@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 
-namespace Fasetto.Word.ViewModels
+namespace Fasetto.Word
 {
     public class WindowViewModel : BaseViewModel
     {   

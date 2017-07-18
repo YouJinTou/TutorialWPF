@@ -3,13 +3,13 @@ using System.Windows.Input;
 
 namespace Fasetto.Word
 {
-    public class RelayCommand : ICommand
+    public class RelayParameterizedCommand : ICommand
     {
         public event EventHandler CanExecuteChanged = (sender, e) => { };
 
-        private Action action;
+        private Action<object> action;
 
-        public RelayCommand(Action action)
+        public RelayParameterizedCommand(Action<object> action)
         {
             this.action = action;
         }
@@ -21,7 +21,7 @@ namespace Fasetto.Word
 
         public void Execute(object parameter)
         {
-            this.action();
+            this.action(parameter);
         }
     }
 }

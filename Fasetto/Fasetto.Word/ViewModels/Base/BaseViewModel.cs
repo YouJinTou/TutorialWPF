@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Fasetto.Word.ViewModels
+namespace Fasetto.Word
 {
     public class BaseViewModel : INotifyPropertyChanged
     {

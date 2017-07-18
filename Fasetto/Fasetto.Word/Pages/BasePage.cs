@@ -4,8 +4,10 @@ using System.Windows.Controls;
 
 namespace Fasetto.Word
 {
-    public class BasePage : Page
+    public class BasePage<VM> : Page where VM : BaseViewModel, new()
     {
+        private VM viewModel;
+
         public BasePage()
         {
             if (this.PageLoadAnimation != PageAnimation.None)
@@ -14,6 +16,8 @@ namespace Fasetto.Word
             }
 
             this.Loaded += this.BasePage_Loaded;
+
+            this.ViewModel = new VM();
         }        
 
         public PageAnimation PageLoadAnimation { get; set; } = PageAnimation.SlideAndFadeInFromRight;
@@ -21,6 +25,24 @@ namespace Fasetto.Word
         public PageAnimation PageUnloadAnimation { get; set; } = PageAnimation.SlideAndFadeOutToLeft;
 
         public float SlideSeconds { get; set; } = 0.8f;
+
+        public VM ViewModel
+        {
+            get
+            {
+                return this.viewModel;
+            }
+            set
+            {
+                if (this.viewModel == value)
+                {
+                    return;
+                }
+
+                this.viewModel = value;
+                this.DataContext = value;
+            }
+        }
 
         public async Task AnimateIn()
         {
@@ -48,10 +70,9 @@ namespace Fasetto.Word
             }
         }
 
-        private async void BasePage_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        private async void BasePage_Loaded(object sender, RoutedEventArgs e)
         {
-            this.AnimateIn();
-            this.AnimateOut();
+            await this.AnimateIn();
         }
     }
 }
