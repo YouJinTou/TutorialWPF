@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Fasetto.Word"
       mc:Ignorable="d" 
+      x:Name="Page"
       d:DesignHeight="700" d:DesignWidth="700"
       Title="LoginPage">
 
@@ -26,7 +27,7 @@
                         Width="330"
                         Margin="50 50 50 0">
                         <StackPanel>
-                            <TextBlock Text="Sign Up" 
+                            <TextBlock Text="Sign In" 
                                    FontSize="{StaticResource FontSizeLarge}" 
                                    FontFamily="{StaticResource LatoRegular}"
                                    Foreground="{StaticResource WordBlueBrush}" />
@@ -34,9 +35,14 @@
                                        FontSize="{StaticResource FontSizeRegular}"
                                        Foreground="{StaticResource ForegroundDarkBrush}"
                                        Margin="0 0 0 20" />
-                            <TextBox Tag="Email" Margin="0 0 0 30" />
+                            <TextBox Text="{Binding Email}" Tag="Email" Margin="0 0 0 30" />
                             <PasswordBox x:Name="PasswordText" Tag="Password" />
-                            <Button Content="Next" Command="{Binding LoginCommand}" CommandParameter="{Binding SecurePassword, ElementName=PasswordText}" HorizontalAlignment="Center" />
+                            <Button 
+                                local:IsBusyProperty.Value="{Binding LoginIsRunning}"
+                                Content="Login" 
+                                Command="{Binding LoginCommand}" 
+                                CommandParameter="{Binding ElementName=Page}" 
+                                HorizontalAlignment="Center" />
                         </StackPanel>
                     </Border>
 

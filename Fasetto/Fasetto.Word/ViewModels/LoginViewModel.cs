@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Security;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Fasetto.Word
@@ -14,9 +15,16 @@ namespace Fasetto.Word
 
         public string Email { get; set; }
 
+        public bool LoginIsRunning { get; set; }
+
         public async Task Login(object parameter)
         {
-            await Task.Delay(1000);
+            await this.RunCommand(() => this.LoginIsRunning, async () =>
+            {
+                await Task.Delay(500);
+
+                var password = (parameter as IHavePassword).SecurePassword.Unsecure();
+            });            
         }
     }
 }
